@@ -14,10 +14,13 @@ Description: A two-column, fixed-width and lightweight template ideal for 1024x7
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="content-type" content="text/html; charset=utf-8" />
-<title>petdog! Conheça aqui seu novo amigo.</title>
+<?php
+include("include/config.php");
+?>
 <meta name="keywords" content="" />
 <meta name="description" content="" />
 <link href="default.css" rel="stylesheet" type="text/css" />
+<title>petdog! Conheça aqui seu novo amigo.</title>
 </head>
 <body>
 <div id="wrapper">
