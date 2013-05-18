@@ -7,20 +7,11 @@ include("include/config.php");
 
 <?php
 if($_POST){
-	if($_POST['submit'] == 'Login'){
-		$querySelectUsuario = "SELECT * FROM usuario 
-										WHERE usuario = '".mysql_real_escape_string($_POST['usuario'])."'
-										AND senha = md5('".$_POST['senha']."')
-										LIMIT 1";
-		$result = mysql_query($querySelectUsuario) or die("Erro no banco!");
-		$rowUsuario = mysql_fetch_assoc($result);
-		
-		session_start();
-
-		$_SESSION['idusuario'] = $rowUsuario['idusuario'];
-		$_SESSION['nome'] = $rowUsuario['nome'];
-		$_SESSION['ADM'] = $rowUsuario['adm'];
+	if($_POST['submit'] == 'Logout'){
+		unset($_SESSION);
+		session_destroy();
 		header("Location: index.php");
+		die();
 	}
 }
 ?>
@@ -60,33 +51,11 @@ include("include/config.php");
 <div id="page">
 	<!-- start content -->
 	<div id="content">
-		<center><div style="width: 350px; heigth: 200px; border: 1px solid #ABABAB">
+		<center>
 			<form action="" name="login" id="login" method="post" enctype="multipart/form-data">
-				<table width="300">
-					<tr>
-						<td width="100" align="right">Login:</td>
-						<td>
-							<input name="usuario" type="text" id="usuario" style="width:100%;" maxlength="25" />
-						</td>
-					</tr>
-					<tr>
-						<td width="100" align="right">
-							<label for="senha">Senha:</label>
-						</td>
-						<td>
-							<input name="senha" type="password" id="senha" style="width:100%;" maxlength="25" />
-						</td>
-					</tr>
-					<tr>
-						<td></td>
-						<td>
-							<input name="submit" type="submit" onclick="" class="Buttons" id="submit" value="Login" />
-						</td>
-					</tr>
-				</table>
+				<input name="submit" type="submit" onclick="" class="ButtonsLogout" id="submit" value="Logout" />
 			</form>
-		</div></center>
-		<div class="post"><a href="cadastro.php"><h2><center>Quero me cadatrar!</center></h2></a></div>
+		</center>
 	</div>
 	<!-- end content -->
 	<!-- start sidebar -->

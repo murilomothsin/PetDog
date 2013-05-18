@@ -223,6 +223,18 @@ input, textarea, select {
 .Buttons:hover {
 	background: #63A907;
 }
+.ButtonsLogout{
+	padding: 3px;
+	border: none;
+	background: #467805;
+	font-size: 16px;
+	color: #FFFFFF;	
+	width: 150px; 
+	height: 100px;
+}
+.ButtonsLogout:hover{
+	background: #63A907;	
+}
 /* Post */
 
 .post {

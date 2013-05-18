@@ -2,10 +2,12 @@
 session_start();
 //Include
 include("include/config.php");
-if(isset($_SESSION)){
+
+if(isset($_SESSION['nome'])){
 	$Usuario ='<span class="saudacaoHeader">Olá '.$_SESSION['nome'].'</span>';
 	$loginout = '<li class="last"><a href="logout.php">LOGOUT</a></li>';
 }else{
+	$Usuario = '';
 	$loginout = '<li class="last"><a href="login.php">LOGIN</a></li>';
 }
 ?>
