@@ -1,16 +1,31 @@
+<?php
+//Include
+include("include/config.php");
+?>
+
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
-<!--
 
-Design by Free CSS Templates
-http://www.freecsstemplates.org
-Released for free under a Creative Commons Attribution 2.5 License
+<?php
+if($_POST){
+	if($_POST['submit'] == 'Login'){
+		$querySelectUsuario = "SELECT * FROM usuario 
+										WHERE usuario = '".mysql_real_escape_string($_POST['usuario'])."'
+										AND senha = md5('".$_POST['senha']."')
+										LIMIT 1";
+		$result = mysql_query($querySelectUsuario) or die("Erro no banco!");
+		$rowUsuario = mysql_fetch_assoc($result);
+		
+		session_start();
 
-Title      : Best Friends
-Version    : 1.0
-Released   : 20080519
-Description: A two-column, fixed-width and lightweight template ideal for 1024x768 resolutions. Suitable for blogs and small websites.
+		$_SESSION['idusuario'] = $rowUsuario['idusuario'];
+		$_SESSION['nome'] = $rowUsuario['nome'];
+		$_SESSION['ADM'] = $rowUsuario['adm'];
+		//die();
+		//header("Location: cadastro.php?cadastro=1");
+	}
+}
+?>
 
--->
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="content-type" content="text/html; charset=utf-8" />
@@ -46,8 +61,33 @@ include("include/config.php");
 <div id="page">
 	<!-- start content -->
 	<div id="content">
-		<div class="post">Login:</div>
-		<div class="post">Cadastrar:</div>
+		<center><div style="width: 350px; heigth: 200px; border: 1px solid #ABABAB">
+			<form action="" name="login" id="login" method="post" enctype="multipart/form-data">
+				<table width="300">
+					<tr>
+						<td width="100" align="right">Login:</td>
+						<td>
+							<input name="usuario" type="text" id="usuario" style="width:100%;" maxlength="25" />
+						</td>
+					</tr>
+					<tr>
+						<td width="100" align="right">
+							<label for="senha">Senha:</label>
+						</td>
+						<td>
+							<input name="senha" type="password" id="senha" style="width:100%;" maxlength="25" />
+						</td>
+					</tr>
+					<tr>
+						<td></td>
+						<td>
+							<input name="submit" type="submit" onclick="" class="Buttons" id="submit" value="Login" />
+						</td>
+					</tr>
+				</table>
+			</form>
+		</div></center>
+		<div class="post"><a href="cadastro.php"><h2><center>Quero me cadatrar!</center></h2></a></div>
 	</div>
 	<!-- end content -->
 	<!-- start sidebar -->

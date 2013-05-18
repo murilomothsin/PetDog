@@ -15,7 +15,6 @@ body {
 
 h1, h2, h3 {
 	margin: 0;
-	text-transform: lowercase;
 	font-weight: normal;
 	color: #559106;
 }
@@ -99,6 +98,11 @@ input, textarea, select {
 	margin: 0 auto;
 	height: 75px;
 }
+.saudacaoHeader{
+	float: right;
+	padding: 20px;
+	color: #FFF;
+}
 
 /* Menu */
 
@@ -107,6 +111,10 @@ input, textarea, select {
 	width: 810px;
 	height: 60px;
 	background: url(images/img03.jpg) no-repeat left top;
+}
+
+#menu span {
+	vertical-align: middle;
 }
 
 #menu ul {
@@ -205,6 +213,16 @@ input, textarea, select {
 	
 }
 
+.Buttons {
+	padding: 3px;
+	border: none;
+	background: #467805;
+	font-size: 13px;
+	color: #FFFFFF;
+}
+.Buttons:hover {
+	background: #63A907;
+}
 /* Post */
 
 .post {
