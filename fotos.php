@@ -42,7 +42,7 @@ if(isset($_SESSION['nome'])){
 	</div>
 </div>
 <div id="logo">
-	<h1><a href="#">PETDOG! </a></h1>
+	<h1><a href="index.php">PETDOG! </a></h1>
 	<h2>Conheça aqui seu novo amigo.</h2>
 </div>
 <!-- end header -->
@@ -51,7 +51,7 @@ if(isset($_SESSION['nome'])){
 <div id="page">
 	<!-- start content -->
 	<div id="content">
-		<a href="cadastro.php"><h2><center>Adicionar um novo animal para doação!</center></h2></a>
+		<a href="adicionar.php"><h2><center>Adicionar um novo animal para doação!</center></h2></a>
 		<div class="post"><center><h2>Fotos</h2></center></div>
 	</div>
 	<!-- end content -->
