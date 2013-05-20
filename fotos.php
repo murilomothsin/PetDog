@@ -1,16 +1,18 @@
+<?php
+session_start();
+//Include
+include("include/config.php");
+
+if(isset($_SESSION['nome'])){
+	$Usuario ='<span class="saudacaoHeader">Olá '.$_SESSION['nome'].'</span>';
+	$loginout = '<li class="last"><a href="logout.php">LOGOUT</a></li>';
+}else{
+	$Usuario = '';
+	$loginout = '<li class="last"><a href="login.php">LOGIN</a></li>';
+}
+?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
-<!--
 
-Design by Free CSS Templates
-http://www.freecsstemplates.org
-Released for free under a Creative Commons Attribution 2.5 License
-
-Title      : Best Friends
-Version    : 1.0
-Released   : 20080519
-Description: A two-column, fixed-width and lightweight template ideal for 1024x768 resolutions. Suitable for blogs and small websites.
-
--->
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="content-type" content="text/html; charset=utf-8" />
@@ -25,12 +27,18 @@ Description: A two-column, fixed-width and lightweight template ideal for 1024x7
 <div id="header">
 	<div id="menu">
 		<ul>
-			<li class="current_page_item"><a href="index.html">início</a></li>
-			<li><a href="fotos.html">FOTOS</a></li>
-			<li><a href="contato.html">CONTATO</a></li>
-			<li><a href="sobre.html">SOBRE</a></li>
-			<li class="last"><a href="login.html">LOGIN</a></li>
+			<li class="current_page_item"><a href="index.php">início</a></li>
+			<li><a href="fotos.php">FOTOS</a></li>
+			<li><a href="contato.php">CONTATO</a></li>
+			<li><a href="sobre.php">SOBRE</a></li>
+			<?php
+			echo $loginout;	
+			?>
+
 		</ul>
+		<?php
+		echo $Usuario;
+		?>
 	</div>
 </div>
 <div id="logo">
@@ -43,8 +51,8 @@ Description: A two-column, fixed-width and lightweight template ideal for 1024x7
 <div id="page">
 	<!-- start content -->
 	<div id="content">
-		<div class="post">Fotos:</div>
-		<div class="post"></div>
+		<a href="cadastro.php"><h2><center>Adicionar um novo animal para doação!</center></h2></a>
+		<div class="post"><center><h2>Fotos</h2></center></div>
 	</div>
 	<!-- end content -->
 	<!-- start sidebar -->

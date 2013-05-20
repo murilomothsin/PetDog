@@ -1,4 +1,5 @@
 <?php
+session_start();
 //Include
 include("include/config.php");
 ?>
@@ -8,9 +9,9 @@ include("include/config.php");
 <?php
 if($_POST){
 	if($_POST['submit'] == 'Logout'){
-		unset($_SESSION);
+		$_SESSION = array();
 		session_destroy();
-		header("Location: index.php");
+		header("Location: index.php?logout");
 		die();
 	}
 }

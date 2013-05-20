@@ -36,6 +36,7 @@ p, ul, ol {
 
 a:link {
 	color: #A5E543;
+	text-decoration: none;
 }
 
 a:hover, a:active {
@@ -45,6 +46,7 @@ a:hover, a:active {
 
 a:visited {
 	color: #A5E543;
+	text-decoration: none;
 }
 
 img {
