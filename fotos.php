@@ -10,6 +10,12 @@ if(isset($_SESSION['nome'])){
 	$Usuario = '';
 	$loginout = '<li class="last"><a href="login.php">LOGIN</a></li>';
 }
+
+/* Seleciona as fotos de animais disponiveis para adoção */
+$queryAniamis = "SELECT * FROM animal";
+$result = mysql_query($queryAniamis) or die("Erro ao acessar o banco de dados<br />".mysql_error());
+$row = mysql_fetch_assoc($result);
+
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 
@@ -53,6 +59,11 @@ if(isset($_SESSION['nome'])){
 	<div id="content">
 		<a href="adicionar.php"><h2><center>Adicionar um novo animal para doação!</center></h2></a>
 		<div class="post"><center><h2>Fotos</h2></center></div>
+		<?php
+		foreach ($row as $key => $value) {
+			
+		}
+		?>
 	</div>
 	<!-- end content -->
 	<!-- start sidebar -->

@@ -2,6 +2,18 @@
 session_start();
 //Include
 include("include/config.php");
+/* Classe responsavel por validar o upload de imagens */
+require_once('include/class/upload.php');
+
+if(isset($_SESSION['nome'])){
+	$Usuario ='<span class="saudacaoHeader">Olá '.$_SESSION['nome'].'</span>';
+	$loginout = '<li class="last"><a href="logout.php">LOGOUT</a></li>';
+}else{
+	echo '<meta http-equiv="content-type" content="text/html; charset=utf-8" />';
+	echo '<center><br />Você deve estar Logado no sistema para adicionar novas fotos.<br />';
+	echo '<br /><br /><a href="index.php">Retornar para pagina o início!</a></center>';
+	die();
+}
 
 ?>
 
@@ -10,31 +22,32 @@ include("include/config.php");
 <?php
 if($_POST){
 	if($_POST['insert']){
-		pr($_POST);
-		die();
-		$nome = "nome = '".mysql_real_escape_string($_POST['nome'])."'";
-		$usuario = "usuario = '".mysql_real_escape_string($_POST['usuario'])."'";
-		$senha = "senha = md5(".$_POST['senha'].")";
-		$endereco = "endereco = '".mysql_real_escape_string($_POST['endereco'])."'";
-		$cep = "cep = '".mysql_real_escape_string($_POST['cep'])."'";
-		$telefone = "telefone = '".mysql_real_escape_string($_POST['telefone'])."'";
-		$email = "email = '".mysql_real_escape_string($_POST['email'])."'";
-		$nascimento = "nascimento = '".mysql_real_escape_string($_POST['nascimento'])."'";
 
-		$queryCadastro = "INSERT INTO usuario SET ".$nome.",
-												".$usuario.",
-												".$senha.",
-												".$endereco.",
-												".$cep.",
-												".$telefone.",
-												".$email.",
-												".$nascimento.",
-												adm = 0,
-												cadastro = now(),
-												ultimo_acesso = now()";
+		/* Adicionar foto ao servidor */
+		$uniq_id = md5(microtime());
+		$file_name = $_POST["nome"] . '_' . $uniq_id;
+		if ($upload->upload_file($_FILES["file"]["tmp_name"], 'upload/pet/', $file_name)){
+			$new_name = $upload->get_file_name();
+		}else{
+			echo '<br />Houve um erro ao enviar a imagem. Por favor, tente novamente.<br />';
+			header("Location: adicionar.php");
+		}
+
+		$nome = "nome = '".mysql_real_escape_string($_POST['nome'])."'";
+		$raca = "raca = '".mysql_real_escape_string($_POST['raca'])."'";
+		$descricao = "descricao = '".mysql_real_escape_string($_POST['descricao'])."'";
+
+		$queryCadastro = "INSERT INTO animal SET ".$nome.",
+												".$raca.",
+												".$descricao.",
+												tipo = '".$_POST['tipo']."',
+												idade = '".$_POST['idade']."',
+												adicionado = now(),
+												doador = '".$_SESSION['idusuario']."',
+												foto = '".$new_name."'";
 		$result = mysql_query($queryCadastro) or die("Erro ao executar o comando");
 		unset($_POST);
-		header("Location: cadastro.php?cadastro=1");
+		header("Location: adicionar.php?cadastro=1");
 	}
 }
 ?>
@@ -60,8 +73,14 @@ include("include/config.php");
 			<li><a href="fotos.html">FOTOS</a></li>
 			<li><a href="contato.html">CONTATO</a></li>
 			<li><a href="sobre.html">SOBRE</a></li>
-			<li class="last"><a href="login.html">LOGIN</a></li>
+			<?php
+			echo $loginout;	
+			?>
+
 		</ul>
+		<?php
+		echo $Usuario;
+		?>
 	</div>
 </div>
 <div id="logo">
@@ -80,7 +99,7 @@ include("include/config.php");
 		<div>
 			<center><h1>Cadastro realizado com sucesso!</h1></center>
 			<br /><br />
-			<center><h3>Para postar fotos faça o <a href="login.php">login</a> no sistema.</h3></center>
+			<center><h3>Para vizualizar a foto faça clique na aba <a href="fotos.php">fotos</a>.</h3></center>
 		</div>
 		<?php
 		}else{
@@ -139,10 +158,10 @@ include("include/config.php");
 				</tr>
 				<tr>
 					<td width="100" align="right">
-						<label for="foto">Foto:</label>
+						<label for="file">Foto:</label>
 					</td>
 					<td width="300">
-						<input name="foto" type="file" id="foto" style="width:100%;"/>
+						<input name="file" type="file" id="file" style="width:100%;"/>
 					</td>
 				</tr>
 				<tr>
