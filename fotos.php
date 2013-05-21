@@ -14,7 +14,41 @@ if(isset($_SESSION['nome'])){
 /* Seleciona as fotos de animais disponiveis para adoção */
 $queryAniamis = "SELECT * FROM animal";
 $result = mysql_query($queryAniamis) or die("Erro ao acessar o banco de dados<br />".mysql_error());
-$row = mysql_fetch_assoc($result);
+while($row = mysql_fetch_assoc($result)){
+	switch ($row['idade']) {
+		case 1:
+			$row['idade'] = 'Até 1 mes';
+		break;
+		case 2:
+			$row['idade'] = 'De 1 mes até 6 meses';
+		break;
+		case 3:
+			$row['idade'] = 'De 6 meses até 1 ano';
+		break;
+		case 4:
+			$row['idade'] = 'Mais de 1 ano';
+		break;
+		default:
+			$row['idade'] = '-';
+		break;
+	}
+	switch ($row['tipo']) {
+		case 1:
+			$row['tipo'] = 'Cachorro';
+		break;
+		case 2:
+			$row['tipo'] = 'Gato';
+		break;
+		case 3:
+			$row['tipo'] = 'Outro';
+		break;
+		
+		default:
+			$row['tipo'] = 'Outro';
+		break;
+	}
+	$fotos[] = $row;
+}
 
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
@@ -59,11 +93,27 @@ $row = mysql_fetch_assoc($result);
 	<div id="content">
 		<a href="adicionar.php"><h2><center>Adicionar um novo animal para doação!</center></h2></a>
 		<div class="post"><center><h2>Fotos</h2></center></div>
+		<ul>
 		<?php
-		foreach ($row as $key => $value) {
-			
+		foreach ($fotos as $key => $value) { ?>
+			<li class="listaFotos" style="">
+				<div style="float: left; width: 220px;">
+					<img src="upload/pet/<?php echo $value['foto']?>" style="width: 200px; margin: 5px;">
+					<center><button class="Buttons" onclick="alert('teste');">Adotar!</button></center>
+				</div>
+				<div>
+					<center><h3><?php echo $value['nome']?></h3></center>
+					<p><?php echo $value['descricao']?></p>
+					<span style="color: #FFF">Raça:</span> <?php echo $value['raca']?><br />
+					<span style="color: #FFF">Idade:</span> <?php echo $value['idade']?><br />
+					<span style="color: #FFF">Tipo:</span> <?php echo $value['tipo']?><br />
+					<span style="color: #FFF">Adicionado:</span> <?php echo formatDate($value['adicionado'])?>
+				</div>
+			</li>
+		<?php
 		}
 		?>
+		</ul>
 	</div>
 	<!-- end content -->
 	<!-- start sidebar -->

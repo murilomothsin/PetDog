@@ -237,6 +237,16 @@ input, textarea, select {
 .ButtonsLogout:hover{
 	background: #63A907;	
 }
+
+/* Listagem de fotos */
+
+.listaFotos{
+	border: 1px solid #CCC; 
+	height: 200px;
+	border-radius: 4px;
+	list-style-type: none; 
+}
+
 /* Post */
 
 .post {
