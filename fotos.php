@@ -60,6 +60,11 @@ while($row = mysql_fetch_assoc($result)){
 <meta name="keywords" content="" />
 <meta name="description" content="" />
 <link href="default.css" rel="stylesheet" type="text/css" />
+<script type="text/javascript">
+function adotar(value){
+	
+}
+</script>
 </head>
 <body>
 <div id="wrapper">
