@@ -242,9 +242,10 @@ input, textarea, select {
 
 .listaFotos{
 	border: 1px solid #CCC; 
-	height: 200px;
+	height: 250px;
 	border-radius: 4px;
 	list-style-type: none; 
+	margin: 3px;
 }
 
 /* Post */

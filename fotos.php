@@ -62,7 +62,28 @@ while($row = mysql_fetch_assoc($result)){
 <link href="default.css" rel="stylesheet" type="text/css" />
 <script type="text/javascript">
 function adotar(value){
-	
+	if(confirm("Será enviado um email para o dono do animal informando seu interess em adota-lo.")){
+		alert(value);
+		$.ajax({
+			type: 'POST',
+			url: 'email.php',
+			data: 'acao=adotar&idanimal='+value,
+			cache: false,
+			beforeSend: function(){
+				alert('sdfds');
+			},
+			success: function(txt){
+				alert(txt);
+				if(txt == 1){
+					document.getElementById(value).setAttribute('disabled', 'disabled');
+				}else
+					alert("Erro ao enviar email!");
+			},
+			error: function(){
+				alert("Erro ao enviar email!");
+			}
+		});
+	}
 }
 </script>
 </head>
@@ -103,12 +124,12 @@ function adotar(value){
 		foreach ($fotos as $key => $value) { ?>
 			<li class="listaFotos" style="">
 				<div style="float: left; width: 220px;">
-					<img src="upload/pet/<?php echo $value['foto']?>" style="width: 200px; margin: 5px;">
-					<center><button class="Buttons" onclick="alert('teste');">Adotar!</button></center>
+					<img src="upload/pet/<?php echo $value['foto']?>" style="width: 200px; max-height: 200px; margin: 5px;">
+					<center><button id="<?php echo $value['idanimal']?>" class="Buttons" onclick="adotar(this.id);">Adotar!</button></center>
 				</div>
 				<div>
 					<center><h3><?php echo $value['nome']?></h3></center>
-					<p><?php echo $value['descricao']?></p>
+					<p style="text-align: left;"><?php echo $value['descricao']?></p>
 					<span style="color: #FFF">Raça:</span> <?php echo $value['raca']?><br />
 					<span style="color: #FFF">Idade:</span> <?php echo $value['idade']?><br />
 					<span style="color: #FFF">Tipo:</span> <?php echo $value['tipo']?><br />
