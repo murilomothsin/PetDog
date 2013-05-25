@@ -14,13 +14,18 @@ if($_POST){
 										LIMIT 1";
 		$result = mysql_query($querySelectUsuario) or die("Erro no banco!");
 		$rowUsuario = mysql_fetch_assoc($result);
-		
-		session_start();
+		$numRow = mysql_num_rows($result);
+		if($numRow > 0){
+			session_start();
 
-		$_SESSION['idusuario'] = $rowUsuario['idusuario'];
-		$_SESSION['nome'] = $rowUsuario['nome'];
-		$_SESSION['ADM'] = $rowUsuario['adm'];
-		header("Location: index.php");
+			$_SESSION['idusuario'] = $rowUsuario['idusuario'];
+			$_SESSION['nome'] = $rowUsuario['nome'];
+			$_SESSION['ADM'] = $rowUsuario['adm'];
+			header("Location: index.php");
+		}else{
+			unset($_POST);
+			header("Location: login.php?erro=1");
+		}
 	}
 }
 ?>
@@ -61,6 +66,11 @@ include("include/config.php");
 	<!-- start content -->
 	<div id="content">
 		<center><div style="width: 350px; heigth: 200px; border: 1px solid #ABABAB">
+			<?php
+				if($_GET['erro'] == 1){
+					echo '<span style="color: red;">Usuário ou senha errado!</span>';
+				}
+			?>
 			<form action="" name="login" id="login" method="post" enctype="multipart/form-data">
 				<table width="300">
 					<tr>

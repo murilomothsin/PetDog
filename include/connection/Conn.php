@@ -3,7 +3,7 @@
 $hostname = "localhost";
 $database = "petdog";
 $username = "root";
-$password = "";
+$password = "123";
 $Conn = mysql_connect($hostname, $username, $password); 
 
 if($Conn === false){

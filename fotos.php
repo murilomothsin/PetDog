@@ -121,7 +121,8 @@ function adotar(value){
 		<div class="post"><center><h2>Fotos</h2></center></div>
 		<ul>
 		<?php
-		foreach ($fotos as $key => $value) { ?>
+		if(count($fotos) > 0){
+			foreach ($fotos as $key => $value) { ?>
 			<li class="listaFotos" style="">
 				<div style="float: left; width: 220px;">
 					<img src="upload/pet/<?php echo $value['foto']?>" style="width: 200px; max-height: 200px; margin: 5px;">
@@ -136,6 +137,15 @@ function adotar(value){
 					<span style="color: #FFF">Adicionado:</span> <?php echo formatDate($value['adicionado'])?>
 				</div>
 			</li>
+		<?php
+			}
+		}else{
+		?>
+		<li>
+			<div>
+				Não há fotos cadastradas!
+			</div>
+		</li>
 		<?php
 		}
 		?>
