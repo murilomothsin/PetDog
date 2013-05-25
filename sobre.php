@@ -25,11 +25,11 @@ Description: A two-column, fixed-width and lightweight template ideal for 1024x7
 <div id="header">
 	<div id="menu">
 		<ul>
-			<li class="current_page_item"><a href="index.html">início</a></li>
-			<li><a href="fotos.html">FOTOS</a></li>
-			<li><a href="contato.html">CONTATO</a></li>
-			<li><a href="sobre.html">SOBRE</a></li>
-			<li class="last"><a href="login.html">LOGIN</a></li>
+			<li class="current_page_item"><a href="index.php">início</a></li>
+			<li><a href="fotos.php">FOTOS</a></li>
+			<li><a href="contato.php">CONTATO</a></li>
+			<li><a href="sobre.php">SOBRE</a></li>
+			<li class="last"><a href="login.php">LOGIN</a></li>
 		</ul>
 	</div>
 </div>

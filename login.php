@@ -47,11 +47,11 @@ include("include/config.php");
 <div id="header">
 	<div id="menu">
 		<ul>
-			<li class="current_page_item"><a href="index.html">início</a></li>
-			<li><a href="fotos.html">FOTOS</a></li>
-			<li><a href="contato.html">CONTATO</a></li>
-			<li><a href="sobre.html">SOBRE</a></li>
-			<li class="last"><a href="login.html">LOGIN</a></li>
+			<li class="current_page_item"><a href="index.php">início</a></li>
+			<li><a href="fotos.php">FOTOS</a></li>
+			<li><a href="contato.php">CONTATO</a></li>
+			<li><a href="sobre.php">SOBRE</a></li>
+			<li class="last"><a href="login.php">LOGIN</a></li>
 		</ul>
 	</div>
 </div>
@@ -67,7 +67,7 @@ include("include/config.php");
 	<div id="content">
 		<center><div style="width: 350px; heigth: 200px; border: 1px solid #ABABAB">
 			<?php
-				if($_GET['erro'] == 1){
+				if(isset($_GET['erro']) && $_GET['erro'] == 1){
 					echo '<span style="color: red;">Usuário ou senha errado!</span>';
 				}
 			?>

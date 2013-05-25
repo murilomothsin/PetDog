@@ -8,12 +8,13 @@ include("include/config.php");
 
 <?php
 if($_POST){
-	if($_POST['submit'] == 'Logout'){
+	if($_POST['submit'] == 'Sim'){
 		$_SESSION = array();
 		session_destroy();
 		header("Location: index.php?logout");
 		die();
-	}
+	}else
+		header("Location: index.php");
 }
 ?>
 
@@ -34,11 +35,10 @@ include("include/config.php");
 <div id="header">
 	<div id="menu">
 		<ul>
-			<li class="current_page_item"><a href="index.html">início</a></li>
-			<li><a href="fotos.html">FOTOS</a></li>
-			<li><a href="contato.html">CONTATO</a></li>
-			<li><a href="sobre.html">SOBRE</a></li>
-			<li class="last"><a href="login.html">LOGIN</a></li>
+			<li class="current_page_item"><a href="index.php">início</a></li>
+			<li><a href="fotos.php">FOTOS</a></li>
+			<li><a href="contato.php">CONTATO</a></li>
+			<li><a href="sobre.php">SOBRE</a></li>
 		</ul>
 	</div>
 </div>
@@ -54,7 +54,9 @@ include("include/config.php");
 	<div id="content">
 		<center>
 			<form action="" name="login" id="login" method="post" enctype="multipart/form-data">
-				<input name="submit" type="submit" onclick="" class="ButtonsLogout" id="submit" value="Logout" />
+				Deseja sair do sistema?
+				<input name="submit" type="submit" onclick="" class="ButtonsLogout" id="submit" value="Sim" />
+				<input name="submit" type="submit" onclick="" class="ButtonsLogout" id="submit" value="Não" />
 			</form>
 		</center>
 	</div>

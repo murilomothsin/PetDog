@@ -231,8 +231,8 @@ input, textarea, select {
 	background: #467805;
 	font-size: 16px;
 	color: #FFFFFF;	
-	width: 150px; 
-	height: 100px;
+	width: 100px; 
+	height: 70px;
 }
 .ButtonsLogout:hover{
 	background: #63A907;	
@@ -313,6 +313,20 @@ input, textarea, select {
 
 .post .meta b {
 	display: none;
+}
+
+.tabelaAnimal {
+	border-collapse: collapse;
+	border: 1px solid #ABABAB;
+}
+
+.nadotado {
+	border: 1px solid #ABABAB;
+	color: red;
+}
+.adotado {
+	border: 1px solid #ABABAB;
+	color: #63A907;
 }
 
 /* Sidebar */

@@ -63,18 +63,15 @@ while($row = mysql_fetch_assoc($result)){
 <script type="text/javascript">
 function adotar(value){
 	if(confirm("Será enviado um email para o dono do animal informando seu interess em adota-lo.")){
-		alert(value);
 		$.ajax({
 			type: 'POST',
 			url: 'email.php',
 			data: 'acao=adotar&idanimal='+value,
 			cache: false,
 			beforeSend: function(){
-				alert('sdfds');
 			},
 			success: function(txt){
-				alert(txt);
-				if(txt == 1){
+				if(txt == '1' || txt == 1){
 					document.getElementById(value).setAttribute('disabled', 'disabled');
 				}else
 					alert("Erro ao enviar email!");
