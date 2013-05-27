@@ -6,7 +6,7 @@ include("include/config.php");
 require_once('include/class/upload.php');
 
 if(isset($_SESSION['nome'])){
-	$Usuario ='<span class="saudacaoHeader">Olá '.$_SESSION['nome'].'</span>';
+	$Usuario ='<span class="saudacaoHeader"><a href="perfil.php">Olá '.$_SESSION['nome'].'</a></span>';
 	$loginout = '<li class="last"><a href="logout.php">LOGOUT</a></li>';
 }else{
 	echo '<meta http-equiv="content-type" content="text/html; charset=utf-8" />';

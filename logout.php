@@ -2,6 +2,15 @@
 session_start();
 //Include
 include("include/config.php");
+
+if(isset($_SESSION['nome'])){
+	$Usuario ='<span class="saudacaoHeader"><a href="perfil.php">Olá '.$_SESSION['nome'].'</a></span>';
+	$loginout = '<li class="last"><a href="logout.php">LOGOUT</a></li>';
+}else{
+	$Usuario = '';
+	$loginout = '<li class="last"><a href="login.php">LOGIN</a></li>';
+}
+
 ?>
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
@@ -39,6 +48,14 @@ include("include/config.php");
 			<li><a href="fotos.php">FOTOS</a></li>
 			<li><a href="contato.php">CONTATO</a></li>
 			<li><a href="sobre.php">SOBRE</a></li>
+			<?php
+			echo $loginout;	
+			?>
+
+		</ul>
+		<?php
+		echo $Usuario;
+		?>
 		</ul>
 	</div>
 </div>

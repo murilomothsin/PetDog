@@ -4,7 +4,7 @@ session_start();
 include("include/config.php");
 
 if(isset($_SESSION['nome'])){
-	$Usuario ='<span class="saudacaoHeader">Olá '.$_SESSION['nome'].'</span>';
+	$Usuario ='<span class="saudacaoHeader"><a href="perfil.php">Olá '.$_SESSION['nome'].'</a></span>';
 	$loginout = '<li class="last"><a href="logout.php">LOGOUT</a></li>';
 }else{
 	$Usuario = '';
