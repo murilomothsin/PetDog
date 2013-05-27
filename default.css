@@ -101,9 +101,16 @@ input, textarea, select {
 	height: 75px;
 }
 .saudacaoHeader{
+	padding: 5px;
+	font-size: 6px;
 	float: right;
-	padding: 20px;
 	color: #FFF;
+	position: absolute;
+	text-align: right;
+}
+.saudacaoHeader a{
+	text-transform: none !important;
+	font-size: 14px !important;
 }
 
 /* Menu */
@@ -113,6 +120,7 @@ input, textarea, select {
 	width: 810px;
 	height: 60px;
 	background: url(images/img03.jpg) no-repeat left top;
+	position: relative;
 }
 
 #menu span {

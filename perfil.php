@@ -4,7 +4,7 @@ session_start();
 include("include/config.php");
 
 if(isset($_SESSION['nome'])){
-  $Usuario ='<span class="saudacaoHeader">Olá '.$_SESSION['nome'].'</span>';
+  $Usuario ='<span class="saudacaoHeader"><a href="perfil.php">Olá '.$_SESSION['nome'].'</a></span>';
   $loginout = '<li class="last"><a href="logout.php">LOGOUT</a></li>';
 }else{
   $Usuario = '';
@@ -12,8 +12,32 @@ if(isset($_SESSION['nome'])){
 }
 
 if($_POST){
-  pr($_POST);
-  die();
+  $nome = "nome = '".mysql_escape_string($_POST['nome'])."',";
+  $endereco = "endereco = '".mysql_escape_string($_POST['endereco'])."',";
+  $cep = "cep = '".mysql_escape_string($_POST['cep'])."',";
+  $telefone = "telefone = '".mysql_escape_string($_POST['telefone'])."',";
+  $nascimento = "nascimento = '".inverte($_POST['nascimento'], "/", "-")."',";
+  $email = "email = '".mysql_escape_string($_POST['email'])."'";
+  if($_POST['senha'] != null){
+    if($_POST['senha'] == $_POST['confirma_senha']){
+      $senha = "senha = md5(".$_POST['senha'].")";
+      $email = $email.",";
+    }
+  }else
+    $senha = "";
+
+  //Query de Update no banco
+  $queryUpdate = "UPDATE usuario SET ".$nome."
+                                    ".$endereco."
+                                    ".$cep."
+                                    ".$telefone."
+                                    ".$nascimento."
+                                    ".$email."
+                                    ".$senha."
+                                    WHERE idusuario = ".$_SESSION['idusuario'];
+  $result = mysql_query($queryUpdate) or die("Erro ao salvar informações do usuário!");
+  unset($_POST);
+  header("Location: perfil.php?update=1");
 }
 
 $queryUsuario = "SELECT * FROM usuario WHERE idusuario = ".$_SESSION['idusuario']." LIMIT 1";
@@ -85,8 +109,16 @@ include("include/config.php");
   <!-- start content -->
   <div id="content">
     <div class="post">
+      <?php
+      if(isset($_GET['update']) && $_GET['update'] == 1){
+        ?>
+        <center><h3>Perfil alterado com sucesso!</h3></center>
+        <br />
+        <?php
+      }
+      ?>
       <h1 class="title">Alterar Perfil</h1>
-      <form>
+      <form name="perfil" id="perfil" method="post" enctype="multipart/form-data">
         <table width="400">
           <tr>
             <td width="100" align="right">
@@ -181,7 +213,7 @@ include("include/config.php");
           <td align="center"><?php echo $value['nome']?></td>
           <td align="center"><?php echo $value['tipo']?></td>
           <td align="center"><?php echo $value['adicionado']?></td>
-          <td align="center"><a href="">E</a> <a href="">D</a></td>
+          <td align="center"><a href="editaAnimal.php?acao=edit&id=<?php echo $value['idanimal']?>">E</a> <a href="">D</a></td>
         </tr>
         <?php
         }
