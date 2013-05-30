@@ -8,15 +8,17 @@ include("include/config.php");
 <?php
 if($_POST){
 	if($_POST['insert']){
-		pr($_POST);
+		if($_POST['senha'] == $_POST['confirma_senha']){
+			$senha = "senha = md5('".$_POST['senha']."')";
+		}else
+			header("Location: cadastro.php?cadastro=3");
 		$nome = "nome = '".mysql_real_escape_string($_POST['nome'])."'";
 		$usuario = "usuario = '".mysql_real_escape_string($_POST['usuario'])."'";
-		$senha = "senha = md5(".$_POST['senha'].")";
 		$endereco = "endereco = '".mysql_real_escape_string($_POST['endereco'])."'";
 		$cep = "cep = '".mysql_real_escape_string($_POST['cep'])."'";
 		$telefone = "telefone = '".mysql_real_escape_string($_POST['telefone'])."'";
 		$email = "email = '".mysql_real_escape_string($_POST['email'])."'";
-		$nascimento = "nascimento = '".mysql_real_escape_string($_POST['nascimento'])."'";
+		$nascimento = "nascimento = '".inverte($_POST['nascimento'], "/", "-")."'";
 
 		$queryCadastro = "INSERT INTO usuario SET ".$nome.",
 												".$usuario.",
@@ -29,7 +31,7 @@ if($_POST){
 												adm = 0,
 												cadastro = now(),
 												ultimo_acesso = now()";
-		$result = mysql_query($queryCadastro) or die("Erro ao executar o comando");
+		$result = mysql_query($queryCadastro) or die(header("Location: cadastro.php?cadastro=2"));
 		unset($_POST);
 		header("Location: cadastro.php?cadastro=1");
 	}
@@ -45,7 +47,69 @@ include("include/config.php");
 <meta name="keywords" content="" />
 <meta name="description" content="" />
 <link href="default.css" rel="stylesheet" type="text/css" />
+<script type="text/javascript" src="include/script/jquery-1.9.1.js"></script>
 <title>petdog! Conheça aqui seu novo amigo.</title>
+<script type="text/javascript">
+function ValUser(){
+	if (document.getElementById('usuario').value.length < 3){
+		//$('#loading-area').css("display","block");
+		$('#error-msg').html('Usuário invalido, m&iacute;nimo 3 caracteres.');
+        $('#error-msg').show();
+		document.getElementById('msgUsuario').className = 'msgError';
+		document.getElementById('usuario').focus();
+		setTimeout(hideError, 4000);
+		return false;
+	}
+	else {
+		$('#error-msg').hide();
+		document.getElementById('msgUsuario').className = 'msgYes';
+		return true;
+	}
+}
+
+function ValPass(){
+	if (document.getElementById('senha').value.length < 2){
+		//$('#loading-area').css("display","block");
+		$('#error-msg').html('Digite uma senha valida, m&iacute;nimo 2 caracteres.');
+        $('#error-msg').show();
+		document.getElementById('msgSenha').className = 'msgError';
+		document.getElementById('senha').focus();
+		setTimeout(hideError, 4000);
+		return false;
+	}
+	else {
+		$('#error-msg').hide();
+		document.getElementById('msgSenha').className = 'msgYes';
+		return true;
+	}
+}
+
+function ValConf(){
+	senha = document.getElementById('senha').value;
+	conf_senha = document.getElementById('confirma_senha').value;
+	if (senha != conf_senha){
+		//$('#loading-area').css("display","block");
+		$('#error-msg').html('Confirmação de senha invalida.');
+        $('#error-msg').show();
+		document.getElementById('msgSenha').className = 'msgError';
+		document.getElementById('msgConfSenha').className = 'msgError';
+		document.getElementById('confirma_senha').focus();
+		setTimeout(hideError, 4000);
+		return false;
+	}
+	else {
+		if(senha > 2){
+			$('#error-msg').hide();
+			document.getElementById('msgSenha').className = 'msgYes';
+			document.getElementById('msgConfSenha').className = 'msgYes';
+			return true;
+		}else{
+			ValPass();
+		}
+		
+	}
+}
+</script>
 </head>
 <body>
 <div id="wrapper">
@@ -82,8 +146,17 @@ include("include/config.php");
 		<?php
 		}else{
 		?>
+		<center><div id="error-msg" style="color: red;"></div></center>
 		<form action="" name="cadastro" id="cadastro" method="post" enctype="multipart/form-data">
 			<table width="400">
+				<?php
+				if(isset($_GET['cadastro']) && $_GET['cadastro'] == 3){
+					echo '<tr><td colspan="2" align="center"><span style="color: red;">Confirmação de senha invalida!</span></td></tr>';
+				}
+				if(isset($_GET['cadastro']) && $_GET['cadastro'] == 2){
+					echo '<tr><td colspan="2" align="center"><span style="color: red;">Erro ao acessar o banco de dados!</span></td></tr>';
+				}
+				?>
 				<tr>
 					<td width="100" align="right">
 						<label for="nome">Nome:</label>
@@ -130,6 +203,7 @@ include("include/config.php");
 					</td>
 					<td width="300">
 						<input name="email" type="text" id="email" style="width:100%;" maxlength="25" />
+						<div id="msgEmail" class="msg"></div>
 					</td>
 				</tr>
 				<tr>
@@ -137,7 +211,8 @@ include("include/config.php");
 						<label for="usuario">Usuário:</label>
 					</td>
 					<td width="300">
-						<input name="usuario" type="text" id="usuario" style="width:100%;" maxlength="25" />
+						<input name="usuario" type="text" id="usuario" onchange="return ValUser();" style="width:90%;" maxlength="25" />
+						<div id="msgUsuario" class="msg" style="float:right;"></div>
 					</td>
 				</tr>
 				<tr>
@@ -145,7 +220,8 @@ include("include/config.php");
 						<label for="senha">Senha:</label>
 					</td>
 					<td width="300">
-						<input name="senha" type="password" id="senha" style="width:100%;" maxlength="25" />
+						<input name="senha" type="password" id="senha" onchange="return ValPass();" style="width:75%;" maxlength="25" />
+						<div id="msgSenha" class="msg" style="float:right;"></div>
 					</td>
 				</tr>
 				<tr>
@@ -153,7 +229,8 @@ include("include/config.php");
 						<label for="confirma_senha">Confime a senha:</label>
 					</td>
 					<td width="300">
-						<input name="confirma_senha" type="password" id="confirma_senha" style="width:100%;" maxlength="25" />
+						<input name="confirma_senha" type="password" id="confirma_senha" onchange="return ValConf();" style="width:75%;" maxlength="25" />
+						<div id="msgConfSenha" class="msg" style="float:right;"></div>
 					</td>
 				</tr>
 				<tr>

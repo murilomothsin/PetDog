@@ -337,6 +337,9 @@ input, textarea, select {
 	color: #63A907;
 }
 
+.msgError		{width:20px;height:13px;background:transparent url(images/error.png) right no-repeat;}
+.msgYes			{width:20px;height:13px;background:transparent url(images/yes.png) right no-repeat;}
+
 /* Sidebar */
 
 #sidebar {
