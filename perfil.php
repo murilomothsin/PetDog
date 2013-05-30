@@ -7,37 +7,50 @@ if(isset($_SESSION['nome'])){
   $Usuario ='<span class="saudacaoHeader"><a href="perfil.php">Olá '.$_SESSION['nome'].'</a></span>';
   $loginout = '<li class="last"><a href="logout.php">LOGOUT</a></li>';
 }else{
+  header("Location: index.php");
   $Usuario = '';
   $loginout = '<li class="last"><a href="login.php">LOGIN</a></li>';
 }
 
 if($_POST){
-  $nome = "nome = '".mysql_escape_string($_POST['nome'])."',";
-  $endereco = "endereco = '".mysql_escape_string($_POST['endereco'])."',";
-  $cep = "cep = '".mysql_escape_string($_POST['cep'])."',";
-  $telefone = "telefone = '".mysql_escape_string($_POST['telefone'])."',";
-  $nascimento = "nascimento = '".inverte($_POST['nascimento'], "/", "-")."',";
-  $email = "email = '".mysql_escape_string($_POST['email'])."'";
-  if($_POST['senha'] != null){
-    if($_POST['senha'] == $_POST['confirma_senha']){
-      $senha = "senha = md5(".$_POST['senha'].")";
-      $email = $email.",";
+  if($_POST['update'] == 1){
+    if (!ereg("^([0-9,a-z,A-Z]+)([.,_]([0-9,a-z,A-Z]+))*[@]([0-9,a-z,A-Z]+)([.,_,-]([0-9,a-z,A-Z]+))*[.]([0-9,a-z,A-Z]){2}([0-9,a-z,A-Z])?$", $_POST['email'])){
+      header("Location: perfil.php?perfil=4");
+      die();
     }
-  }else
-    $senha = "";
+    if($_POST['nome'] == '' || $_POST['email'] == '' || $_POST['senha'] == '' || $_POST['telefone'] == ''){
+      header("Location: perfil.php?perfil=4");
+      die();
+    }
 
-  //Query de Update no banco
-  $queryUpdate = "UPDATE usuario SET ".$nome."
-                                    ".$endereco."
-                                    ".$cep."
-                                    ".$telefone."
-                                    ".$nascimento."
-                                    ".$email."
-                                    ".$senha."
-                                    WHERE idusuario = ".$_SESSION['idusuario'];
-  $result = mysql_query($queryUpdate) or die("Erro ao salvar informações do usuário!");
-  unset($_POST);
-  header("Location: perfil.php?update=1");
+    $nome = "nome = '".mysql_escape_string($_POST['nome'])."',";
+    $endereco = "endereco = '".mysql_escape_string($_POST['endereco'])."',";
+    $cep = "cep = '".mysql_escape_string($_POST['cep'])."',";
+    $telefone = "telefone = '".mysql_escape_string($_POST['telefone'])."',";
+    $nascimento = "nascimento = '".inverte($_POST['nascimento'], "/", "-")."',";
+    $email = "email = '".mysql_escape_string($_POST['email'])."'";
+    if($_POST['senha'] != null){
+      if($_POST['senha'] == $_POST['confirma_senha']){
+        $senha = "senha = md5('".$_POST['senha']."')";
+        $email = $email.",";
+      }else
+        header("Location: perfil.php?perfil=3");
+        die();
+    }
+
+    //Query de Update no banco
+    $queryUpdate = "UPDATE usuario SET ".$nome."
+                                      ".$endereco."
+                                      ".$cep."
+                                      ".$telefone."
+                                      ".$nascimento."
+                                      ".$email."
+                                      ".$senha."
+                                      WHERE idusuario = ".$_SESSION['idusuario'];
+    $result = mysql_query($queryUpdate) or die(header("Location: perfil.php?perfil=2"));
+    unset($_POST);
+    header("Location: perfil.php?update=1");
+  }
 }
 
 $queryUsuario = "SELECT * FROM usuario WHERE idusuario = ".$_SESSION['idusuario']." LIMIT 1";
@@ -77,6 +90,75 @@ include("include/config.php");
 <meta name="description" content="" />
 <link href="default.css" rel="stylesheet" type="text/css" />
 <title>petdog! Conheça aqui seu novo amigo.</title>
+<script type="text/javascript" src="include/script/jquery-1.9.1.js"></script>
+<script type="text/javascript" src="http://code.jquery.com/jquery-1.4.4.min.js"></script>
+<script type="text/javascript" src="include/script/jQuery.maskedinput.js"></script>
+<script type="text/javascript">
+$(function(){
+  $('#nascimento').mask("99/99/9999");
+  $('#telefone').mask("(99)99999999");
+  $('#cep').mask("99999999");
+});
+function ValUser(){
+  if (document.getElementById('usuario').value.length < 3){
+    //$('#loading-area').css("display","block");
+    $('#error-msg').html('Usuário invalido, m&iacute;nimo 3 caracteres.');
+        $('#error-msg').show();
+    document.getElementById('msgUsuario').className = 'msgError';
+    document.getElementById('usuario').focus();
+    setTimeout(hideError, 4000);
+    return false;
+  }
+  else {
+    $('#error-msg').hide();
+    document.getElementById('msgUsuario').className = 'msgYes';
+    return true;
+  }
+}
+
+function ValPass(){
+  if (document.getElementById('senha').value.length < 2){
+    //$('#loading-area').css("display","block");
+    $('#error-msg').html('Digite uma senha valida, m&iacute;nimo 2 caracteres.');
+        $('#error-msg').show();
+    document.getElementById('msgSenha').className = 'msgError';
+    document.getElementById('senha').focus();
+    setTimeout(hideError, 4000);
+    return false;
+  }
+  else {
+    $('#error-msg').hide();
+    document.getElementById('msgSenha').className = 'msgYes';
+    return true;
+  }
+}
+
+function ValConf(){
+  senha = document.getElementById('senha').value;
+  conf_senha = document.getElementById('confirma_senha').value;
+  if (senha != conf_senha){
+    //$('#loading-area').css("display","block");
+    $('#error-msg').html('Confirmação de senha invalida.');
+        $('#error-msg').show();
+    document.getElementById('msgSenha').className = 'msgError';
+    document.getElementById('msgConfSenha').className = 'msgError';
+    document.getElementById('confirma_senha').focus();
+    setTimeout(hideError, 4000);
+    return false;
+  }
+  else {
+    if(senha > 2){
+      $('#error-msg').hide();
+      document.getElementById('msgSenha').className = 'msgYes';
+      document.getElementById('msgConfSenha').className = 'msgYes';
+      return true;
+    }else{
+      ValPass();
+    }
+    
+  }
+}
+</script>
 </head>
 <body>
 <div id="wrapper">
@@ -118,6 +200,18 @@ include("include/config.php");
       }
       ?>
       <h1 class="title">Alterar Perfil</h1>
+      <?php
+      if(isset($_GET['perfil']) && $_GET['perfil'] == 3){
+          echo '<center><span style="color: red;">Confirmação de senha invalida!</span></center>';
+        }
+        if(isset($_GET['perfil']) && $_GET['perfil'] == 2){
+          echo '<center><span style="color: red;">Erro ao acessar o banco de dados!</span></center>';
+        }
+        if(isset($_GET['perfil']) && $_GET['perfil'] == 4){
+          echo '<center><span style="color: red;">Campos obrigatórios não preenchidos corretamente!</center>';
+        }
+      ?>
+      <center><div id="error-msg" style="color: red;"></div></center>
       <form name="perfil" id="perfil" method="post" enctype="multipart/form-data">
         <table width="400">
           <tr>
@@ -173,7 +267,8 @@ include("include/config.php");
               <label for="senha">Senha:</label>
             </td>
             <td width="300">
-              <input name="senha" type="password" id="senha" style="width:100%;" maxlength="25" />
+              <input name="senha" type="password" id="senha" onchange="return ValPass();" style="float:left; width:75%;" maxlength="25" />
+              <div id="msgSenha" class="msg" style="float:left;"></div>
             </td>
           </tr>
           <tr>
@@ -181,11 +276,12 @@ include("include/config.php");
               <label for="confirma_senha">Confime a senha:</label>
             </td>
             <td width="300">
-              <input name="confirma_senha" type="password" id="confirma_senha" style="width:100%;" maxlength="25" />
+              <input name="confirma_senha" type="password" id="confirma_senha" onchange="return ValConf();" style="float:left; width:75%;" maxlength="25" />
+              <div id="msgConfSenha" class="msg" style="float:left;"></div>
             </td>
           </tr>
           <tr>
-            <td><input type="hidden" name="insert" value="1" /></td>
+            <td><input type="hidden" name="update" value="1" /></td>
             <td align="center">
               <input name="submit" type="submit" onclick="" class="Buttons" id="submit" value="Salvar" />
             </td>

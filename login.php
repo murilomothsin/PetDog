@@ -40,6 +40,42 @@ include("include/config.php");
 <meta name="description" content="" />
 <link href="default.css" rel="stylesheet" type="text/css" />
 <title>petdog! Conheça aqui seu novo amigo.</title>
+<script type="text/javascript" src="include/script/jquery-1.9.1.js"></script>
+<script type="text/javascript">
+function ValUser(){
+	if (document.getElementById('usuario').value.length < 3){
+		//$('#loading-area').css("display","block");
+		$('#error-msg').html('Usuário invalido, m&iacute;nimo 3 caracteres.');
+        $('#error-msg').show();
+		document.getElementById('msgUsuario').className = 'msgError';
+		document.getElementById('usuario').focus();
+		setTimeout(hideError, 4000);
+		return false;
+	}
+	else {
+		$('#error-msg').hide();
+		document.getElementById('msgUsuario').className = 'msgYes';
+		return true;
+	}
+}
+
+function ValPass(){
+	if (document.getElementById('senha').value.length < 2){
+		//$('#loading-area').css("display","block");
+		$('#error-msg').html('Digite uma senha valida, m&iacute;nimo 2 caracteres.');
+        $('#error-msg').show();
+		document.getElementById('msgSenha').className = 'msgError';
+		document.getElementById('senha').focus();
+		setTimeout(hideError, 4000);
+		return false;
+	}
+	else {
+		$('#error-msg').hide();
+		document.getElementById('msgSenha').className = 'msgYes';
+		return true;
+	}
+}
+</script>
 </head>
 <body>
 <div id="wrapper">
@@ -71,12 +107,14 @@ include("include/config.php");
 					echo '<span style="color: red;">Usuário ou senha errado!</span>';
 				}
 			?>
+			<div id="error-msg"></div>
 			<form action="" name="login" id="login" method="post" enctype="multipart/form-data">
 				<table width="300">
 					<tr>
 						<td width="100" align="right">Login:</td>
 						<td>
-							<input name="usuario" type="text" id="usuario" style="width:100%;" maxlength="25" />
+							<input name="usuario" type="text" id="usuario" onchange="return ValUser();" style="width:85%; float:left;" maxlength="25" />
+							<div id="msgUsuario" class="msg" style="float:left;"></div>
 						</td>
 					</tr>
 					<tr>
@@ -84,7 +122,8 @@ include("include/config.php");
 							<label for="senha">Senha:</label>
 						</td>
 						<td>
-							<input name="senha" type="password" id="senha" style="width:100%;" maxlength="25" />
+							<input name="senha" type="password" id="senha" onchange="return ValPass();" style="float:left; width:85%;" maxlength="25" />
+							<div id="msgSenha" class="msg" style="float:left;"></div>
 						</td>
 					</tr>
 					<tr>

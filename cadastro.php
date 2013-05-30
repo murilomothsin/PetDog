@@ -8,6 +8,14 @@ include("include/config.php");
 <?php
 if($_POST){
 	if($_POST['insert']){
+		if (!ereg("^([0-9,a-z,A-Z]+)([.,_]([0-9,a-z,A-Z]+))*[@]([0-9,a-z,A-Z]+)([.,_,-]([0-9,a-z,A-Z]+))*[.]([0-9,a-z,A-Z]){2}([0-9,a-z,A-Z])?$", $_POST['email'])){
+			header("Location: cadastro.php?cadastro=4");
+			die();
+		}
+		if($_POST['usuario'] == '' || $_POST['nome'] == '' || $_POST['email'] == '' || $_POST['senha'] == '' || $_POST['telefone'] == ''){
+			header("Location: cadastro.php?cadastro=4");
+			die();
+		}
 		if($_POST['senha'] == $_POST['confirma_senha']){
 			$senha = "senha = md5('".$_POST['senha']."')";
 		}else
@@ -48,8 +56,15 @@ include("include/config.php");
 <meta name="description" content="" />
 <link href="default.css" rel="stylesheet" type="text/css" />
 <script type="text/javascript" src="include/script/jquery-1.9.1.js"></script>
+<script type="text/javascript" src="http://code.jquery.com/jquery-1.4.4.min.js"></script>
+<script type="text/javascript" src="include/script/jQuery.maskedinput.js"></script>
 <title>petdog! Conheça aqui seu novo amigo.</title>
 <script type="text/javascript">
+$(function(){
+	$('#nascimento').mask("99/99/9999");
+	$('#telefone').mask("(99)99999999");
+	$('#cep').mask("99999999");
+});
 function ValUser(){
 	if (document.getElementById('usuario').value.length < 3){
 		//$('#loading-area').css("display","block");
@@ -156,10 +171,13 @@ function ValConf(){
 				if(isset($_GET['cadastro']) && $_GET['cadastro'] == 2){
 					echo '<tr><td colspan="2" align="center"><span style="color: red;">Erro ao acessar o banco de dados!</span></td></tr>';
 				}
+				if(isset($_GET['cadastro']) && $_GET['cadastro'] == 4){
+					echo '<tr><td colspan="2" align="center"><span style="color: red;">Campos obrigatórios não preenchidos corretamente!</span></td></tr>';
+				}
 				?>
 				<tr>
 					<td width="100" align="right">
-						<label for="nome">Nome:</label>
+						<span style="color: red;">*</span><label for="nome">Nome:</label>
 					</td>
 					<td width="300">
 						<input name="nome" type="text" id="nome" style="width:100%;" maxlength="200" />
@@ -183,7 +201,7 @@ function ValConf(){
 				</tr>
 				<tr>
 					<td width="100" align="right">
-						<label for="telefone">Telefone:</label>
+						<span style="color: red;">*</span><label for="telefone">Telefone:</label>
 					</td>
 					<td width="300">
 						<input name="telefone" type="text" id="telefone" style="width:100%;" maxlength="12" />
@@ -194,45 +212,45 @@ function ValConf(){
 						<label for="nascimento">Data de Nascimento:</label>
 					</td>
 					<td width="300">
-						<input name="nascimento" type="text" id="nascimento" style="width:100%;" maxlength="10" />
+						<input name="nascimento" type="text" id="nascimento" style="width:35%;" maxlength="10" />
 					</td>
 				</tr>
 				<tr>
 					<td width="100" align="right">
-						<label for="email">E-mail:</label>
+						<span style="color: red;">*</span><label for="email">E-mail:</label>
 					</td>
 					<td width="300">
 						<input name="email" type="text" id="email" style="width:100%;" maxlength="25" />
-						<div id="msgEmail" class="msg"></div>
 					</td>
 				</tr>
 				<tr>
 					<td width="100" align="right">
-						<label for="usuario">Usuário:</label>
+						<span style="color: red;">*</span><label for="usuario">Usuário:</label>
 					</td>
 					<td width="300">
-						<input name="usuario" type="text" id="usuario" onchange="return ValUser();" style="width:90%;" maxlength="25" />
-						<div id="msgUsuario" class="msg" style="float:right;"></div>
+						<input name="usuario" type="text" id="usuario" onchange="return ValUser();" style="float:left; width:90%;" maxlength="25" />
+						<div id="msgUsuario" class="msg" style="float:left;"></div>
 					</td>
 				</tr>
 				<tr>
 					<td width="100" align="right">
-						<label for="senha">Senha:</label>
+						<span style="color: red;">*</span><label for="senha">Senha:</label>
 					</td>
 					<td width="300">
-						<input name="senha" type="password" id="senha" onchange="return ValPass();" style="width:75%;" maxlength="25" />
-						<div id="msgSenha" class="msg" style="float:right;"></div>
+						<input name="senha" type="password" id="senha" onchange="return ValPass();" style="float:left; width:75%;" maxlength="25" />
+						<div id="msgSenha" class="msg" style="float:left;"></div>
 					</td>
 				</tr>
 				<tr>
 					<td width="100" align="right">
-						<label for="confirma_senha">Confime a senha:</label>
+						<span style="color: red;">*</span><label for="confirma_senha">Confime a senha:</label>
 					</td>
 					<td width="300">
-						<input name="confirma_senha" type="password" id="confirma_senha" onchange="return ValConf();" style="width:75%;" maxlength="25" />
-						<div id="msgConfSenha" class="msg" style="float:right;"></div>
+						<input name="confirma_senha" type="password" id="confirma_senha" onchange="return ValConf();" style="float:left; width:75%;" maxlength="25" />
+						<div id="msgConfSenha" class="msg" style="float:left;"></div>
 					</td>
 				</tr>
+				<tr><td colspan="2"><span style="color: red;">(*) Campos obrigatórios</span></td></tr>
 				<tr>
 					<td><input type="hidden" name="insert" value="1" /></td>
 					<td align="center">
@@ -241,6 +259,7 @@ function ValConf(){
 				</tr>
 			</table>
 		</form>
+
 		<?php
 		}
 		?>
