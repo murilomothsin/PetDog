@@ -1,6 +1,6 @@
 <?php
 session_start();
-
+include("include/config.php");
 require("include/phpmailer/class.phpmailer.php");
 
 
@@ -20,7 +20,7 @@ if($_POST['acao'] == 'adotar'){
 	/* Prepara classe para envio do email */
 
 	$msgEmail = 'Olá '.$rowDoador['nome'].'<br />
-	Gostariamos de informar que '.$_SESSION['nome'].' tem interesse em adotar o '.$selectAnimal['nome'].'.<br />
+	Gostariamos de informar que '.$_SESSION['nome'].' tem interesse em adotar o '.$row['nome'].'.<br />
 	O e-mail do interessado é: '.$rowUser['email'].'<br />e o telefone é: '.$rowUser['telefone'].'
 	<br /><br />Email enviado por PetDog.<br />POR FAVOR NÃO RESPONDA ESTE E-MAIL!';
 
@@ -33,17 +33,16 @@ if($_POST['acao'] == 'adotar'){
 	$mail->SMTPAuth = true; // Usa autenticação SMTP? (opcional)
 	$mail->Username = 'petdogcontato@bol.com.br'; // Usuário do servidor SMTP
 	$mail->Password = '12qwaszx'; // Senha do servidor SMTP
- 	
+ 	$mail->Port = 587; // Define a porta do servidor (Não mude, pois da crecks na mente)
  	// Define o remetente
-	$mail->From = "petdogcontato@bol.com.br"; // Seu e-mail
-	$mail->FromName = "PetDog"; // Seu nome
+ 	$mail->SetFrom("petdogcontato@bol.com.br", "PetDog");
 
 	// Define os destinatário(s)
 	$mail->AddAddress($rowDoador['email'], $rowDoador['nome']);
 
 	// Define os dados técnicos da Mensagem
 	$mail->IsHTML(true); // Define que o e-mail será enviado como HTML
-	$mail->CharSet = 'iso-8859-1'; // Charset da mensagem (opcional)
+	$mail->CharSet = 'utf-8'; // Charset da mensagem (opcional)
 
 	// Define a mensagem (Texto e Assunto)
 	$mail->Subject  = "Interesse em adotar um de seus animais!"; // Assunto da mensagem

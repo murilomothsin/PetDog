@@ -52,8 +52,26 @@ if(isset($_SESSION['nome'])){
 <div id="page">
 	<!-- start content -->
 	<div id="content">
-		<div class="post">Sobre:</div>
-		<div class="post"></div>
+		<div class="post"><h1>Sobre:</h1></div>
+		<div class="post">
+			<p>
+				A cada dia que passa a população de animais abandonados aumenta em nossas cidades, com a falta de incentivo à 
+				adoção e a castração de nossos bichos de estimação esse número tende a aumentar. Atualmente estão surgindo 
+				diversas instituições não governamentais (ONG’s) que estão abraçando a causa e lutando por melhorias neste 
+				setor, porém a falta de divulgação e de um meio de comunicação eficiente e interativo faz com que muitas pessoas 
+				acabem por não saber como funcionam e onde se localizam tais instituições.
+			</p>
+			<p>
+				O site interativo PETDOG está propiciando uma nova maneira de interagir com todos aqueles que trabalham auxiliando 
+				animais abandonados, mostrando uma versátil interface com um banco de dados próprio para armazenamento de fotos e 
+				informações dos animais. Possibilitando assim a interação da população com aqueles que podem ser seus futuros 
+				animais de estimação.
+			</p>
+			<span style="float: right;">
+				Att. Cleiton Marcolan<br />
+				cleitongm@gmail.com
+			</span>
+		</div>
 	</div>
 	<!-- end content -->
 	<!-- start sidebar -->

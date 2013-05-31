@@ -29,7 +29,9 @@ if(isset($_GET['id'])){
 			die();
 		}
 	}else if($_GET['acao'] == 'del'){
-		echo 'delete';
+		$deleteAnimal = "DELETE FROM animal WHERE idanimal = ".$_GET['id'];
+		$result = mysql_query($deleteAnimal);
+		header("Location: perfil.php");
 		die();
 	}
 }else{
@@ -202,7 +204,11 @@ include("include/config.php");
 							$selectUsuarios = "SELECT * FROM usuario";
 							$result = mysql_query($selectUsuarios) or die("Erro ao listar os usuários!");
 							while ($rowUsuarios = mysql_fetch_assoc($result)) {
-								echo '<option value="'.$rowUsuarios['idusuario'].'">'.$rowUsuarios['nome'].'</option>';
+								if($rowUsuarios['idusuario'] == $Animal['adotado_por'])
+									$check = 'selected';
+								else
+									$check = '';
+								echo '<option value="'.$rowUsuarios['idusuario'].'" '.$check.'>'.$rowUsuarios['nome'].'</option>';
 							}
 							?>
 						</select>

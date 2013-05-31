@@ -12,9 +12,25 @@ if(isset($_SESSION['nome'])){
 }
 
 /* Seleciona as fotos de animais disponiveis para adoção */
-$queryAniamis = "SELECT * FROM animal";
+
+$total_reg = "5"; // número de registros por página
+
+if (!isset($_GET['pagina'])) {
+	$pc = "1";
+} else {
+	$pc = $_GET['pagina'];
+}
+
+$inicio = $pc - 1;
+$inicio = $inicio * $total_reg;
+$queryAniamis = "SELECT * FROM animal LIMIT ".$inicio.", ".$total_reg;
+
 $result = mysql_query($queryAniamis) or die("Erro ao acessar o banco de dados<br />".mysql_error());
 while($row = mysql_fetch_assoc($result)){
+	if($row['adotado_por'] != null){
+		$row['botao'] = 'disabled';
+	}else
+		$row['botao'] = '';
 	switch ($row['idade']) {
 		case 1:
 			$row['idade'] = 'Até 1 mes';
@@ -50,6 +66,13 @@ while($row = mysql_fetch_assoc($result)){
 	$fotos[] = $row;
 }
 
+$todos = mysql_query("SELECT * FROM animal");
+
+$tr = mysql_num_rows($todos); // verifica o número total de registros
+$tp = $tr / $total_reg; // verifica o número total de páginas
+// agora vamos criar os botões "Anterior e próximo"
+$anterior = $pc -1;
+$proximo = $pc +1;
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 
@@ -60,6 +83,7 @@ while($row = mysql_fetch_assoc($result)){
 <meta name="keywords" content="" />
 <meta name="description" content="" />
 <link href="default.css" rel="stylesheet" type="text/css" />
+<script type="text/javascript" src="include/script/jquery-1.9.1.js"></script>
 <script type="text/javascript">
 function adotar(value){
 	if(confirm("Será enviado um email para o dono do animal informando seu interess em adota-lo.")){
@@ -72,6 +96,7 @@ function adotar(value){
 			},
 			success: function(txt){
 				if(txt == '1' || txt == 1){
+					alert('Email enviado com sucesso!');
 					document.getElementById(value).setAttribute('disabled', 'disabled');
 				}else
 					alert("Erro ao enviar email!");
@@ -120,18 +145,23 @@ function adotar(value){
 		<?php
 		if(count($fotos) > 0){
 			foreach ($fotos as $key => $value) { ?>
-			<li class="listaFotos" style="">
+			<li class="listaFotos <?php if($value['adotado_por'] != null) echo 'Adotado';?>" style="">
+				<?php
+					if($value['adotado_por'] != null){
+						echo '<center><span style="font-size: 20px;color: #467805;">Adotado</span></center><hr>';
+					}
+				?>
 				<div style="float: left; width: 220px;">
 					<img src="upload/pet/<?php echo $value['foto']?>" style="width: 200px; max-height: 200px; margin: 5px;">
-					<center><button id="<?php echo $value['idanimal']?>" class="Buttons" onclick="adotar(this.id);">Adotar!</button></center>
+					<center><button id="<?php echo $value['idanimal']?>" <?php echo $value['botao']?> class="Buttons" onclick="adotar(this.id);">Adotar!</button></center>
 				</div>
-				<div>
+				<div style="height: 230px; display: inline-block;">
 					<center><h3><?php echo $value['nome']?></h3></center>
-					<p style="text-align: left;"><?php echo $value['descricao']?></p>
-					<span style="color: #FFF">Raça:</span> <?php echo $value['raca']?><br />
-					<span style="color: #FFF">Idade:</span> <?php echo $value['idade']?><br />
-					<span style="color: #FFF">Tipo:</span> <?php echo $value['tipo']?><br />
-					<span style="color: #FFF">Adicionado:</span> <?php echo formatDate($value['adicionado'])?>
+					<p style="text-align: left; height: 70px; width: 250px; overflow: auto;"><?php echo $value['descricao']?></p>
+					<span style="color: #FFF; margin: 0 auto;">Raça:</span> <?php echo $value['raca']?><br />
+					<span style="color: #FFF;  margin: 0 auto;">Idade:</span> <?php echo $value['idade']?><br />
+					<span style="color: #FFF;  margin: 0 auto;">Tipo:</span> <?php echo $value['tipo']?><br />
+					<span style="color: #FFF;  margin: 0 auto;">Adicionado:</span> <?php echo formatDate($value['adicionado'])?>
 				</div>
 			</li>
 		<?php
@@ -147,6 +177,17 @@ function adotar(value){
 		}
 		?>
 		</ul>
+		<center>
+		<?php
+			if ($pc>1) {
+				echo " <a href='?pagina=$anterior'><- Anterior</a> ";
+			}
+				echo "|";
+			if ($pc<$tp) {
+				echo " <a href='?pagina=$proximo'>Próxima -></a>";
+			}
+		?>
+		</center>
 	</div>
 	<!-- end content -->
 	<!-- start sidebar -->

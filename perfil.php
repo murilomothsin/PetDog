@@ -295,7 +295,8 @@ function ValConf(){
         <tr>
           <td align="center">Nome</td>
           <td align="center">Tipo</td>
-          <td align="center">Adicionado</td>
+          <td align="center">Adicionado em</td>
+          <td align="center">Adotado em</td>
           <td align="center">Ações</td>
         </tr>
         <?php
@@ -308,8 +309,9 @@ function ValConf(){
         <tr class="<?php echo $classTR; ?>">
           <td align="center"><?php echo $value['nome']?></td>
           <td align="center"><?php echo $value['tipo']?></td>
-          <td align="center"><?php echo $value['adicionado']?></td>
-          <td align="center"><a href="editaAnimal.php?acao=edit&id=<?php echo $value['idanimal']?>">E</a> <a href="">D</a></td>
+          <td align="center"><?php echo formatDate($value['adicionado']) ?></td>
+          <td align="center"><?php echo formatDate($value['adotado_em']) ?></td>
+          <td align="center"><a href="editaAnimal.php?acao=edit&id=<?php echo $value['idanimal']?>">Editar</a> | <a href="editaAnimal.php?acao=del&id=<?php echo $value['idanimal']?>">Deletar</a></td>
         </tr>
         <?php
         }
